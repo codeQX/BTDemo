@@ -7,27 +7,63 @@
 
     </data>
 
-    <ScrollView  android:id="@+id/weatherLayout"
+    <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        android:visibility="invisible">
-
-        <LinearLayout
+        android:id="@+id/drawerLayout"
+        >
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
 
-            <include
-                android:id="@+id/includeNowLayout"
-                layout="@layout/now" />
+            >
 
-            <include layout="@layout/forecast"
-                android:id="@+id/includeForecastLayout"/>
+            <ScrollView
+                android:id="@+id/weatherLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                android:visibility="invisible">
 
-            <include layout="@layout/life_index"
-                android:id="@+id/includeIndexLayout"/>
-        </LinearLayout>
-    </ScrollView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/includeNowLayout"
+                        layout="@layout/now" />
+
+                    <include
+                        android:id="@+id/includeForecastLayout"
+                        layout="@layout/forecast" />
+
+                    <include
+                        android:id="@+id/includeIndexLayout"
+                        layout="@layout/life_index" />
+                </LinearLayout>
+            </ScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@color/colorPrimary"
+            >
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/placeFragment"
+                android:name="com.lepu.bt.demo.ui.place.PlaceFragment"
+                android:layout_marginTop="25dp"
+                />
+
+        </FrameLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 </layout>
