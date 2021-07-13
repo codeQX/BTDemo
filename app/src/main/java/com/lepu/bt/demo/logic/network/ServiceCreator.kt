@@ -2,6 +2,7 @@ package com.lepu.bt.demo.logic.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 /**
  * =================================================================================================
@@ -19,8 +20,7 @@ object ServiceCreator {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    fun <T> create(serviceClass: Class<T>): T = retrofit.create(serviceClass)
-
-    inline fun <reified T> create(): T = create(T::class.java)
+    val placeService = retrofit.create<PlaceService>()
+    val weatherService = retrofit.create<WeatherService>()
 
 }

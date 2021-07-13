@@ -1,13 +1,6 @@
 package com.lepu.bt.demo.logic.network
 
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.await
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
-
 
 /**
  * =================================================================================================
@@ -19,25 +12,15 @@ import kotlin.coroutines.suspendCoroutine
  */
 object SunnyWeatherNetwork {
 
-    private val placeService=ServiceCreator.create<PlaceService>()
+    //地区服务
+    suspend fun searchPlaces(query: String) =
+        ServiceCreator.placeService.searchPlaces(query).await()
 
-    suspend fun searchPlaces(query: String) = placeService.searchPlaces(query).await()
+    //获取实时和未来天气
+    suspend fun getDailyWeather(lng: String, lat: String) =
+        ServiceCreator.weatherService.getDailyWeather(lng, lat).await()
 
-    //retrofit kotlin代码已经有了关于这部分的代码
-//    private suspend fun <T> Call<T>.await():T{
-//        return suspendCoroutine { continuation ->
-//            enqueue(object : Callback<T>{
-//                override fun onResponse(call: Call<T>, response: Response<T>) {
-//                    val body = response.body()
-//                    if (body != null) continuation.resume(body)
-//                    else continuation.resumeWithException(RuntimeException("response body is null"))
-//                }
-//
-//                override fun onFailure(call: Call<T>, t: Throwable) {
-//                    continuation.resumeWithException(t)
-//                }
-//            })
-//
-//        }
-//    }
+    suspend fun getRealtimeWeather(lng: String, lat: String) =
+        ServiceCreator.weatherService.getRealtimeWeather(lng, lat).await()
+
 }

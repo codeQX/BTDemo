@@ -1,5 +1,6 @@
 package com.lepu.bt.demo.ui.place
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.lepu.bt.demo.R
 import com.lepu.bt.demo.logic.model.Place
+import com.lepu.bt.demo.ui.weather.WeatherActivity
 
 /**
  * =================================================================================================
@@ -17,18 +19,33 @@ import com.lepu.bt.demo.logic.model.Place
  * Date: 2021/7/13 上午 11:23
  * =================================================================================================
  */
-class PlaceAdapter(private val fragment:Fragment, private val placeList:List<Place>):
-RecyclerView.Adapter<PlaceAdapter.ViewHolder>(){
+class PlaceAdapter(private val fragment: PlaceFragment, private val placeList: List<Place>) :
+    RecyclerView.Adapter<PlaceAdapter.ViewHolder>() {
 
-    inner class ViewHolder(view:View) : RecyclerView.ViewHolder(view){
-        val placeName:TextView = view.findViewById(R.id.placeName)
-        val placeAddress:TextView = view.findViewById(R.id.placeAddress)
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val placeName: TextView = view.findViewById(R.id.placeName)
+        val placeAddress: TextView = view.findViewById(R.id.placeAddress)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.place_item,
-            parent, false)
-        return ViewHolder(view)
+        val view = LayoutInflater.from(parent.context).inflate(
+            R.layout.place_item,
+            parent, false
+        )
+        val holder = ViewHolder(view)
+        holder.itemView.setOnClickListener {
+            val position = holder.bindingAdapterPosition
+            val place = placeList[position]
+            val intent = Intent(parent.context, WeatherActivity::class.java).apply {
+                putExtra("location_lng", place.location.lng)
+                putExtra("location_lat", place.location.lat)
+                putExtra("place_name", place.name)
+            }
+            fragment.viewModel.savePlace(place)
+            fragment.startActivity(intent)
+            fragment.activity?.finish()
+        }
+        return holder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
